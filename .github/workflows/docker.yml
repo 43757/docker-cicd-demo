@@ -1,0 +1,21 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cicd-demo .
+
+    - run: docker push ${{ secrets.DOCKER_USERNAME }}/cicd-demo
